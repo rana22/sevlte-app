@@ -18,30 +18,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Build
+      - run: npm ci
+      - name: Build (SvelteKit -> build/)
         env:
-          BASE_PATH: ${{ github.repository_owner == 'your-org-or-user' && '""' || '""' }}
-        run: |
-          # (Optional) if you publish from a project subpath, you can pass a base path.
-          npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          # For project sites like https://username.github.io/repo-name set this:
+          BASE_PATH: "/${{ github.event.repository.name }}"
+          # For root sites (username.github.io) set BASE_PATH to empty: ""
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: build
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
