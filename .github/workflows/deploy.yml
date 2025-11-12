@@ -1,14 +1,15 @@
+# .github/workflows/deploy.yml
 name: Deploy Vite app to GitHub Pages
 
 on:
   push:
-    branches: [ main ]   # change if your default branch is different
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  pages: write        # required by deploy-pages
+  id-token: write     # required by deploy-pages OIDC
 
 concurrency:
   group: "pages"
@@ -18,40 +19,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install
-        run: npm ci || npm i
+      - run: npm ci || npm i
 
-      # IMPORTANT:
-      # If deploying to https://USERNAME.github.io/REPO, keep BASE_PATH as below.
-      # If deploying to root site https://USERNAME.github.io, set BASE_PATH to "".
       - name: Build
         env:
-          BASE_PATH: "/${{ github.event.repository.name }}"
+          BASE_PATH: "/${{ github.event.repository.name }}" # "" for root site
         run: npm run build
 
-      - name: Verify dist/
-        run: test -d dist && ls -la dist || (echo "❌ dist/ not found"; exit 1)
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
