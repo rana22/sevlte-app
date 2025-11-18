@@ -6,7 +6,7 @@ export function omeroLoginUrl(returnTo: string): string {
 }
 
 export function iviewerUrlForImage(imageId: number | string): string {
-  return `${OMERO_BASE}/iviewer/?images=${imageId}`;
+  return `https://nife-dev.cancer.gov/webgateway/render_thumbnail/${imageId}`;
 }
 
 export function thumbnailUrl(imageId: number | string): string {
