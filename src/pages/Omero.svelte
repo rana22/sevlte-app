@@ -253,7 +253,7 @@
       <div class="viewer">
         <iframe
           title="OMERO iviewer"
-          src={viewerSrc}
+          src={`https://nife-dev.cancer.gov/webgateway/render_thumbnail/189455`}
           referrerpolicy="no-referrer"
           allowfullscreen
         />
