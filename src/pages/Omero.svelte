@@ -257,6 +257,7 @@
           referrerpolicy="no-referrer"
           allowfullscreen
         />
+        <img src={`https://nife-dev.cancer.gov/webgateway/render_thumbnail/189455`} alt='image-icon'/>
       </div>
     {/if}
 
