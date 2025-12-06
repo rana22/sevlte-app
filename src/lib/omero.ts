@@ -16,7 +16,7 @@ export function thumbnailUrl(imageId: number | string): string {
 
 export async function getImageRenderUrl(imageId: number): Promise<string> {
   const imgDataRes = await fetch(
-    `${OMERO_BASE}/webgateway/imgData/${imageId}/`,
+    `${OMERO_BASE}/webgateway/render_thumbnail/11422/`,
     { credentials: 'include' } // use OMERO session cookie
   );
 
